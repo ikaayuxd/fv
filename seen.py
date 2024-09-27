@@ -10,13 +10,13 @@ def read_proxies_from_file(file_path):
         proxies = [line.strip() for line in file]
     return set(proxies)
 
-def http_start(link, proxies):
-    global count, req_count
-    while proxies:
+def http_start(link):
+    global proxy_h , count , req_count
+    while proxy_h != []:
         if req_count >= int(count):
             p = psutil.Process(os.getpid())
             p.terminate()
-        proxy = random.choice(list(proxies))
+        proxy = random.choice(proxy_h)
         try:
             session = requests.session()
             session.proxies.update({'http': f'http://{proxy}', 'https': f'http://{proxy}'})
@@ -24,20 +24,15 @@ def http_start(link, proxies):
                 'accept-language': 'en-US,en;q=0.9',
                 'user-agent': 'Mozilla/5.0 (Linux; Android 10; SM-G981B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.162 Mobile Safari/537.36',
                 'x-requested-with': 'XMLHttpRequest'
-            })
-
+                })
             main_res = session.get(link)
             _token = main_res.text.split('data-view="')[1].split('"')[0]
-            print("Extracted Token:", _token)
-
-            views_req = session.get(f"https://t.me/v/?views={_token}")
-            print(' [+] View Sent ' + 'Status Code: ' + str(views_req.status_code) + ' Response: ' + views_req.text)
-
-            proxies.remove(proxy)
+            views_req = session.get("https://t.me/v/?views=" + _token)
+            print(' [+] View Sent ' + 'Stats Code: '+str(views_req.status_code))
+            proxy_h.remove(proxy)
             req_count += 1
-        except requests.exceptions.RequestException as e:
-            print("An exception occurred while sending the view:", e)
-            # Handle Proxy Authentication Required error here
+        except:
+            pass
 
 try:
     count = sys.argv[3]
