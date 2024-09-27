@@ -156,6 +156,7 @@ def http_start(link):
             })
             main_res = session.get(link)
             _token = main_res.text.split('data-view="')[1].split('"')[0]
+            time.sleep(1)
             views_req = session.get("https://t.me/v/?views=" + _token)
             print(' [+] View Sent ' + 'Stats Code: ' + str(views_req.status_code))
             proxy_h.remove(proxy)
