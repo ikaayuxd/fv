@@ -1,4 +1,4 @@
-,
+
 ##
   # Github https://github.com/aDarkDev/Telegram-Seen
   # 
