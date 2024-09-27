@@ -161,7 +161,7 @@ def http_start(link):
             print(' [+] View Sent ' + 'Stats Code: ' + str(views_req.status_code))
             proxy_h.remove(proxy)
             req_count += 1
-            time.sleep(1)  # Adding a one-second delay
+            time.sleep(5)  # Adding a one-second delay
         except:
             pass
         
