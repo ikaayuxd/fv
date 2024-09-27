@@ -10,7 +10,7 @@ def read_proxies_from_file(file_path):
         proxies = [line.strip() for line in file]
     return set(proxies)
 
-def http_start(link):
+def http_start(link, proxies):
     global proxy_h , count , req_count
     while proxy_h != []:
         if req_count >= int(count):
@@ -44,7 +44,6 @@ try:
         proxies = read_proxies_from_file('proxies.txt')
         for ii in range(600):
             threading.Thread(target=http_start, args=(url_fin, proxies)).start()
-
 except Exception as e:
     print(e)
     print("Error. Help: python3 seen.py <link> file <count>")
