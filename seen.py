@@ -19,6 +19,7 @@ def http_start(link, proxies):
             p.terminate()
         proxy = random.choice(list(proxies))
         try:
+            print(f"Using proxy: {proxy}")  # Add debug print
             session = requests.session()
             session.proxies.update({'http': f'http://{proxy}', 'https': f'http://{proxy}'})
             session.headers.update({
