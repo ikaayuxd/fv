@@ -5,19 +5,18 @@ import threading
 import psutil
 import os
 
-proxy_h = []
 def read_proxies_from_file(file_path):
     with open(file_path, 'r') as file:
         proxies = [line.strip() for line in file]
     return set(proxies)
 
 def http_start(link, proxies):
-    global proxy_h , count , req_count
-    while proxy_h != []:
+    global req_count
+    while proxies:
         if req_count >= int(count):
             p = psutil.Process(os.getpid())
             p.terminate()
-        proxy = random.choice(proxy_h)
+        proxy = random.choice(list(proxies))
         try:
             session = requests.session()
             session.proxies.update({'http': f'http://{proxy}', 'https': f'http://{proxy}'})
@@ -30,10 +29,14 @@ def http_start(link, proxies):
             _token = main_res.text.split('data-view="')[1].split('"')[0]
             views_req = session.get("https://t.me/v/?views=" + _token)
             print(' [+] View Sent ' + 'Stats Code: '+str(views_req.status_code))
-            proxy_h.remove(proxy)
+            proxies.remove(proxy)
             req_count += 1
-        except:
-            pass
+        except Exception as e:
+            print(f"Error: {e}")
+
+if len(sys.argv) < 4:
+    print("Error. Help: python3 seen.py <link> file <count>")
+    sys.exit()
 
 try:
     count = sys.argv[3]
@@ -44,7 +47,8 @@ try:
     if sys.argv[2] == "file":
         proxies = read_proxies_from_file('proxies.txt')
         for ii in range(600):
-            threading.Thread(target=http_start, args=(url_fin, proxies)).start()
+            threading.Thread(target=http_start, args=(url_fin, proxies.copy())).start()
+
 except Exception as e:
     print(e)
     print("Error. Help: python3 seen.py <link> file <count>")
