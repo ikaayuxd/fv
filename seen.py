@@ -13,12 +13,6 @@ import requests , random , sys , threading , psutil , os, time
 
 def http():
     hit = []
-    try:
-        zxcvv = requests.get("https://proxylist.geonode.com/api/proxy-list?limit=500&page=1&sort_by=lastChecked&sort_type=desc&protocols=http%2Chttps",timeout=8).json()["data"]
-        for okeys in zxcvv:
-            hit.append(okeys['ip']+":"+okeys['port'])
-    except:
-        pass
 
     with open("proxies.txt", "r") as file:
         for line in file:
