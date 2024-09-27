@@ -51,16 +51,20 @@ def http_start(link):
 
             if views_req.status_code == 200: # Check for success
                 req_count += 1
-                proxy_h.remove(proxy) # Remove the proxy if successful
+                # Remove the proxy if successful. Add a check before removing:
+                if proxy in proxy_h: # Only remove if the proxy is still in the list
+                    proxy_h.remove(proxy)
             else:
                 print(f'    Error: {views_req.status_code}')
                 print(f'    Response Text: {views_req.text}')
 
             time.sleep(5) # Add a delay between requests
-        except Exception as e:
+        except requests.exceptions.ProxyError as e:
             print(f' [-] Proxy {proxy} failed: {e}')
-            proxy_h.remove(proxy) # Remove the proxy if it fails
-            time.sleep(1) # Wait a bit before trying again
+            #time.sleep(1) # Wait a bit before trying again
+        except Exception as e:
+            print(f' [-] General Error: {e}')
+            #time.sleep(1) # Wait a bit before trying again
 
 # =================================[START]==========================================
 try:
@@ -77,3 +81,4 @@ except Exception as e:
     print("""Error . Help : python3 seen.py <link> <type> <count>
 Types : http , socks4 , socks5 , mix
 """)
+    
