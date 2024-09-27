@@ -8,7 +8,7 @@
   # 
   # Python 3
 ##
-import requests , random , sys , threading , psutil , os
+import requests , random , sys , threading , psutil , os, time
 #=================================[PROXY]==========================================
 
 def http():
@@ -140,7 +140,7 @@ def socks5_start(link):
             pass
 
 def http_start(link):
-    global proxy_h , count , req_count
+    global proxy_h, count, req_count
     while proxy_h != []:
         if req_count >= int(count):
             p = psutil.Process(os.getpid())
@@ -153,13 +153,14 @@ def http_start(link):
                 'accept-language': 'en-US,en;q=0.9',
                 'user-agent': 'Mozilla/5.0 (Linux; Android 10; SM-G981B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.162 Mobile Safari/537.36',
                 'x-requested-with': 'XMLHttpRequest'
-                })
+            })
             main_res = session.get(link)
             _token = main_res.text.split('data-view="')[1].split('"')[0]
             views_req = session.get("https://t.me/v/?views=" + _token)
-            print(' [+] View Sent ' + 'Stats Code: '+str(views_req.status_code))
+            print(' [+] View Sent ' + 'Stats Code: ' + str(views_req.status_code))
             proxy_h.remove(proxy)
             req_count += 1
+            time.sleep(1)  # Adding a one-second delay
         except:
             pass
         
