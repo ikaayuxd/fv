@@ -10,7 +10,6 @@ def read_proxies_from_file(file_path):
         proxies = [line.strip() for line in file]
     return set(proxies)
 
-# Update the http_start function to use proxies from the file
 def http_start(link, proxies):
     global count, req_count
     while proxies:
@@ -19,7 +18,6 @@ def http_start(link, proxies):
             p.terminate()
         proxy = random.choice(list(proxies))
         try:
-            print(f"Using proxy: {proxy}")  # Add debug print
             session = requests.session()
             session.proxies.update({'http': f'http://{proxy}', 'https': f'http://{proxy}'})
             session.headers.update({
@@ -30,12 +28,15 @@ def http_start(link, proxies):
             
             main_res = session.get(link)
             _token = main_res.text.split('data-view="')[1].split('"')[0]
-            views_req = session.get("https://t.me/v/?views=" + _token)
-            print(' [+] View Sent ' + 'Stats Code: '+str(views_req.status_code))
+            print("Extracted Token:", _token)
+            
+            views_req = session.get(f"https://t.me/v/?views={_token}")
+            print(' [+] View Sent ' + 'Status Code: ' + str(views_req.status_code) + ' Response: ' + views_req.text)
+            
             proxies.remove(proxy)
             req_count += 1
-        except:
-            pass
+        except Exception as e:
+            print("An exception occurred:", e)
 
 try:
     count = sys.argv[3]
@@ -50,5 +51,4 @@ try:
             
 except Exception as e:
     print(e)
-    print("""Error. Help: python3 seen.py <link> file <count>
-    """)
+    print("Error. Help: python3 seen.py <link> file <count>")
