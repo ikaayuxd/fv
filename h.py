@@ -1,16 +1,5 @@
 import pygame
 
-# Initialize Pygame
-pygame.init()
-
-# Set screen dimensions
-screen_width = 800
-screen_height = 600
-screen = pygame.display.set_mode((screen_width, screen_height))
-
-# Set title
-pygame.display.set_caption("Bird Animation")
-
 # Bird class
 class Bird:
     def __init__(self, x, y):
@@ -37,6 +26,17 @@ class Bird:
 
     def jump(self):
         self.velocity = -self.jump_height
+
+# Initialize Pygame
+pygame.init()
+
+# Set screen dimensions
+screen_width = 800
+screen_height = 600
+screen = pygame.display.set_mode((screen_width, screen_height))
+
+# Set title
+pygame.display.set_caption("Bird Animation")
 
 # Create a bird object
 bird = Bird(screen_width // 2, screen_height // 2)
