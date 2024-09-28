@@ -1,5 +1,4 @@
 import pygame
-import random
 
 # Initialize Pygame
 pygame.init()
@@ -12,12 +11,6 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 # Set title
 pygame.display.set_caption("Bird Animation")
 
-# Colors
-black = (0, 0, 0)
-white = (255, 255, 255)
-blue = (0, 0, 255)
-green = (0, 255, 0)
-
 # Bird class
 class Bird:
     def __init__(self, x, y):
@@ -25,7 +18,7 @@ class Bird:
         self.y = y
         self.width = 50
         self.height = 30
-        self.color = (255, 255, 0) # Yellow
+        self.color = (255, 255, 0)  # Yellow
         self.velocity = 0
         self.gravity = 0.5
         self.jump_height = 10
@@ -63,7 +56,7 @@ while running:
     bird.update()
 
     # Clear the screen
-    screen.fill(blue)
+    screen.fill((0, 0, 255))  # Clear the screen with blue color
 
     # Draw the bird
     bird.draw()
